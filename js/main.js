@@ -18,8 +18,8 @@ if(developMode){
 	require.config({
           waitSeconds : 600,
 		  paths: {
-				'Cesium': '../Cesium/Cesium',
-                'Zlib': '../Cesium/Workers/zlib.min'
+				'Cesium': './Cesium/Cesium',
+                'Zlib': './Cesium/Workers/zlib.min'
 		  },
 		  shim: {
 			  Cesium: {
