@@ -1,4 +1,4 @@
-var startPosition = [parseFloat(airport['PEK'][0]), parseFloat(airport['PEK'][1])];
+//var startPosition = [parseFloat(airport['PEK'][0]), parseFloat(airport['PEK'][1])];
 
 var CreatlinePoints = function(startPosition, endPositions, baseHeight, num) {
 
@@ -71,7 +71,7 @@ var EARTH_RADIUS = 6378137.0; //单位M
 var PI = Math.PI;
 
 function getRad(d) {
-	return d * PI / 180.0;
+	return d * Math.PI / 180.0;
 }
 
 function getGreatCircleDistance(lat1, lng1, lat2, lng2) {

@@ -11,10 +11,10 @@
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
 		<script src="./js/jquery.min.js"></script>
 		<script type="text/javascript" src="./js/require.min.js" data-main="js/main"></script>
-		<script src="data/addairport.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/core.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/CreatlinePoints.js" type="text/javascript" charset="utf-8"></script>
+		<script src="data/data.js" type="text/javascript" charset="utf-8"></script>
 		<style>
 			html,
 			body,
@@ -81,22 +81,21 @@
 				scene.primitives.add(DynamicLayer3Dlayer);
 				DynamicLayer3Dlayer.updateInterval = 200;
 
-				leftClick_handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
-				addleftClick_handlerAction(true);
-
 				viewer.scene.skyBox.show = false;
 				viewer.scene.sun.show = false;
 				viewer.scene.bloomEffect.show = true; //启用泛光效果
-				viewer.scene.bloomEffect.threshold = 0.6;
+				viewer.scene.bloomEffect.threshold = 0.7;
 				viewer.scene.bloomEffect.bloomIntensity = 1;
 
 				addWorlddata();
 				//addCountryState();
 
-				addRoatePOI(airPoints);
+				addRoatePOI(dataGTC18);
+				addlines(dataGTC18);
+				linesplayControls(0)
 
-				var pointsArr = CreatlinePoints(startPosition, airPoints, 200000, 100)
-				var lines = DrawLines(pointsArr)
+				//var pointsArr = CreatlinePoints(startPosition, airPoints, 200000, 100)
+				//var lines = DrawLines(pointsArr)
 
 				$('#loadingbar').remove();
 			}
@@ -133,106 +132,577 @@
 			}
 			var scaleValue = 0;
 			var addRoatePOI = function(POIObjs) {
-				POIObjs.forEach(function(value, index, array) {
-					var imgurl = '';
-					switch(value[3]) {
-						case 1:
-							imgurl = 'images/red.png'
-							break;
-						case 2:
-							imgurl = 'images/blue.png'
-							break;
-						case 3:
-							imgurl = 'images/green.png'
-							break;
-						default:
-							break;
-					}
 
-					var POIEntity = viewer.entities.add({
-						name: value[2],
-						position: Cesium.Cartesian3.fromDegrees(value[0], value[1], 200000),
-						ellipse: {
-							semiMinorAxis: new Cesium.CallbackProperty(function() {
-								var that=this;
-								console.log(that)
-								return scaleValue
-							}, false),
-							semiMajorAxis: new Cesium.CallbackProperty(function() {
-								if(scaleValue < 300000) {
-									scaleValue += 300
+				var dataObj = dataGTC18['China'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['China'] = StartR;
+				var imgurl = 'images/red.png';
 
-								} else {
-									scaleValue = 0
-								}
-								return scaleValue
-							}, false),
-							height: 1200,
-							material: new Cesium.ImageMaterialProperty({
-								image: imgurl,
-								repeat: new Cesium.Cartesian2(1, 1),
-								transparent: true
-							}),
-							//							rotation: new Cesium.CallbackProperty(getRotationValue, false),
-							//							stRotation: new Cesium.CallbackProperty(getRotationValue, false),
-							outline: false, // height must be set for outline to display
-							numberOfVerticalLines: 100
-						},
-						description: '测试数据'
+				viewer.entities.add({
+					name: 'China',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['China']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['China'] < 300000) {
+								window['China'] += 1500
 
-					});
+							} else {
+								window['China'] = 0
+							}
+							return window['China']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
 
-				})
-				var rotation = Cesium.Math.toRadians(30);
+				});
 
-				function getRotationValue() {
-					rotation += 0.002;
-					return rotation;
-				}
+				var dataObj = dataGTC18['American'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['American'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'American',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['American']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['American'] < 300000) {
+								window['American'] += 1500
+
+							} else {
+								window['American'] = 0
+							}
+							return window['American']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['Canada'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['Canada'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'Canada',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['Canada']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['Canada'] < 300000) {
+								window['Canada'] += 1500
+
+							} else {
+								window['Canada'] = 0
+							}
+							return window['Canada']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['UK'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['UK'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'UK',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['UK']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['UK'] < 300000) {
+								window['UK'] += 1500
+
+							} else {
+								window['UK'] = 0
+							}
+							return window['UK']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['Australia'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['Australia'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'UK',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['Australia']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['Australia'] < 300000) {
+								window['Australia'] += 1500
+
+							} else {
+								window['Australia'] = 0
+							}
+							return window['Australia']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['NewZealand'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['NewZealand'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'NewZealand',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['NewZealand']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['NewZealand'] < 300000) {
+								window['NewZealand'] += 1500
+
+							} else {
+								window['NewZealand'] = 0
+							}
+							return window['NewZealand']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['Germany'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['Germany'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'Germany',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['Germany']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['Germany'] < 300000) {
+								window['Germany'] += 1500
+
+							} else {
+								window['Germany'] = 0
+							}
+							return window['Germany']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['Singapore'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['Singapore'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'Singapore',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['Singapore']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['Singapore'] < 300000) {
+								window['Singapore'] += 1500
+
+							} else {
+								window['Singapore'] = 0
+							}
+							return window['Singapore']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['Spain'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['Spain'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'Spain',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['Spain']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['Spain'] < 300000) {
+								window['Spain'] += 1500
+
+							} else {
+								window['Spain'] = 0
+							}
+							return window['Spain']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['French'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['French'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'French',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['French']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['French'] < 300000) {
+								window['French'] += 1500
+
+							} else {
+								window['French'] = 0
+							}
+							return window['French']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
+
+				var dataObj = dataGTC18['Japan'];
+				var StartR = parseInt(Math.random() * 300000)
+				window['Japan'] = StartR;
+				var imgurl = 'images/red.png';
+
+				viewer.entities.add({
+					name: 'Japan',
+					position: Cesium.Cartesian3.fromDegrees(dataObj.position.x, dataObj.position.y, 200000),
+					ellipse: {
+						semiMinorAxis: new Cesium.CallbackProperty(function() {
+							//console.log(window[key])
+							return window['Japan']
+						}, false),
+						semiMajorAxis: new Cesium.CallbackProperty(function() {
+							if(window['Japan'] < 300000) {
+								window['Japan'] += 1500
+
+							} else {
+								window['Japan'] = 0
+							}
+							return window['Japan']
+						}, false),
+						height: 1200,
+						material: new Cesium.ImageMaterialProperty({
+							image: imgurl,
+							repeat: new Cesium.Cartesian2(1, 1),
+							transparent: true
+						}),
+						outline: false, // height must be set for outline to display
+						numberOfVerticalLines: 100
+					},
+					description: '测试数据'
+
+				});
 
 			}
-
-			//点击动态对象查询弹出气泡
-			var addleftClick_handlerAction = function(value) {
-				//clearAll();
-
-				var inputfn = leftClick_handler.getInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
-				if(inputfn !== undefined) {
-					leftClick_handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
+			var timeLineObjs = {
+				time15: {
+					baseLine: [],
+					Trailline: []
+				},
+				time16: {
+					baseLine: [],
+					Trailline: []
+				},
+				time17: {
+					baseLine: [],
+					Trailline: []
 				}
-				if(value === true) {
+			}
+			var addlines = function(dataObjs) {
 
-					leftClick_handler.setInputAction(function(e) {
-						var position = scene.pickPosition(e.position);
+				var startPosition = dataObjs['China'].position;
 
-						//将笛卡尔坐标转化为经纬度坐标
-						var cartographic = Cesium.Cartographic.fromCartesian(position);
-						var longitude = Cesium.Math.toDegrees(cartographic.longitude);
-						var latitude = Cesium.Math.toDegrees(cartographic.latitude);
-						var height = cartographic.height;
+				for(var key in dataObjs) {
+					if(dataObjs[key].immigration !== undefined) {
+						//添加基线和尾迹
+						var endposition = dataObjs[key].position;
+						var dis = getGreatCircleDistance(endposition.y, endposition.x, startPosition.y, startPosition.x);
+						var immigrationdata = dataObjs[key].immigration;
+						var data15LineNum = parseInt((immigrationdata.data15 / 2000).toFixed(0));
+						var data16LineNum = parseInt((immigrationdata.data16 / 2000).toFixed(0));
+						var data17LineNum = parseInt((immigrationdata.data17 / 2000).toFixed(0));
 
-						var selectedState = viewer.selectedEntity.primitive;
-						if(selectedState !== undefined) {
-							var info = selectedState._description;
-							sceneBubble.showAt(position);
-							sceneBubble.container.change({
-								contentTable: {
-									name: ['id', 'id', 'id', 'id'],
-									value: [info.id, info.id, info.id, info.id]
+						for(var i = 0; i < data15LineNum; i++) {
+							var baselineitem = viewer.entities.add({ // 用于打底的线
+								polyline: {
+									positions: Cesium.Cartesian3.fromDegreesArrayHeights([startPosition.x, startPosition.y, 0, endposition.x, endposition.y, 0]),
+									width: 2, // 线的宽度，像素为单位
+									material: Cesium.Color.fromCssColorString("rgba(118, 233, 241, 0.2)"),
+									hMax: dis / 10 - 30000 * i
 								}
-							})
-						} else {
-							sceneBubble.container.hide();
+							});
+							timeLineObjs.time15.baseLine.push(baselineitem);
+							var traillineitem = viewer.entities.add({ // 尾迹线
+								polyline: {
+									positions: Cesium.Cartesian3.fromDegreesArrayHeights([startPosition.x, startPosition.y, 0, endposition.x, endposition.y, 0]),
+									width: 3, // 线的宽度，像素为单位
+									material: new Cesium.PolylineTrailMaterialProperty({ // 尾迹线材质
+										color: Cesium.Color.fromCssColorString("rgba(118, 233, 241, 1.0)"),
+										trailLength: 0.01,
+										period: 100.0
+									}),
+									hMax: dis / 10 - 30000 * i
+								}
+							});
+
+							timeLineObjs.time15.Trailline.push(traillineitem);
 						}
 
-					}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+						for(var i = 0; i < data16LineNum; i++) {
+							var baselineitem = viewer.entities.add({ // 用于打底的线
+								polyline: {
+									positions: Cesium.Cartesian3.fromDegreesArrayHeights([startPosition.x, startPosition.y, 0, endposition.x, endposition.y, 0]),
+									width: 2, // 线的宽度，像素为单位
+									material: Cesium.Color.fromCssColorString("rgba(118, 100, 241, 0.2)"),
+									hMax: dis / 10 - 30000 * i
+								}
+							});
+							timeLineObjs.time16.baseLine.push(baselineitem);
+							var traillineitem = viewer.entities.add({ // 尾迹线
+								polyline: {
+									positions: Cesium.Cartesian3.fromDegreesArrayHeights([startPosition.x, startPosition.y, 0, endposition.x, endposition.y, 0]),
+									width: 3, // 线的宽度，像素为单位
+									material: new Cesium.PolylineTrailMaterialProperty({ // 尾迹线材质
+										color: Cesium.Color.fromCssColorString("rgba(118, 100, 241, 1.0)"),
+										trailLength: 0.01,
+										period: 100.0
+									}),
+									hMax: dis / 10 - 30000 * i
+								}
+							});
 
-				} else {
-					var inputfn = leftClick_handler.getInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK)
-					if(inputfn !== undefined) {
-						leftClick_handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
+							timeLineObjs.time16.Trailline.push(traillineitem);
+						}
+
+						for(var i = 0; i < data17LineNum; i++) {
+							var baselineitem = viewer.entities.add({ // 用于打底的线
+								polyline: {
+									positions: Cesium.Cartesian3.fromDegreesArrayHeights([startPosition.x, startPosition.y, 0, endposition.x, endposition.y, 0]),
+									width: 2, // 线的宽度，像素为单位
+									material: Cesium.Color.fromCssColorString("rgba(118, 233, 100, 0.2)"),
+									hMax: dis / 10 - 30000 * i
+								}
+							});
+							timeLineObjs.time17.baseLine.push(baselineitem);
+							var traillineitem = viewer.entities.add({ // 尾迹线
+								polyline: {
+									positions: Cesium.Cartesian3.fromDegreesArrayHeights([startPosition.x, startPosition.y, 0, endposition.x, endposition.y, 0]),
+									width: 3, // 线的宽度，像素为单位
+									material: new Cesium.PolylineTrailMaterialProperty({ // 尾迹线材质
+										color: Cesium.Color.fromCssColorString("rgba(118, 233, 100, 1.0)"),
+										trailLength: 0.01,
+										period: 100.0
+									}),
+									hMax: dis / 10 - 30000 * i
+								}
+							});
+
+							timeLineObjs.time17.Trailline.push(traillineitem);
+						}
+
 					}
-					sceneBubble.container.hide();
+				}
+			}
+
+			var linesplayControls = function(value) {
+
+				if(value === 0) {
+					for(var key in timeLineObjs) {
+						if(key === 'time15') {
+							timeLineObjs[key].baseLine.forEach(function(item) {
+								item.show = true
+							})
+							timeLineObjs[key].Trailline.forEach(function(item) {
+								item.show = true
+							})
+						} else {
+							timeLineObjs[key].baseLine.forEach(function(item) {
+								item.show = false
+							})
+							timeLineObjs[key].Trailline.forEach(function(item) {
+								item.show = false
+							})
+						}
+						value = 1;
+						setTimeout(function() {
+
+							linesplayControls(value)
+						}, 2000)
+
+					}
+
+				} else if(value === 1) {
+					for(var key in timeLineObjs) {
+						if(key === 'time16') {
+							timeLineObjs[key].baseLine.forEach(function(item) {
+								item.show = true
+							})
+							timeLineObjs[key].Trailline.forEach(function(item) {
+								item.show = true
+							})
+						} else {
+							timeLineObjs[key].baseLine.forEach(function(item) {
+								item.show = false
+							})
+							timeLineObjs[key].Trailline.forEach(function(item) {
+								item.show = false
+							})
+						}
+						value = 2;
+						setTimeout(function() {
+
+							linesplayControls(value)
+						}, 2000)
+					}
+
+				} else if(value === 2) {
+					for(var key in timeLineObjs) {
+						if(key === 'time17') {
+							timeLineObjs[key].baseLine.forEach(function(item) {
+								item.show = true
+							})
+							timeLineObjs[key].Trailline.forEach(function(item) {
+								item.show = true
+							})
+						} else {
+							timeLineObjs[key].baseLine.forEach(function(item) {
+								item.show = false
+							})
+							timeLineObjs[key].Trailline.forEach(function(item) {
+								item.show = false
+							})
+						}
+						value = 0;
+						setTimeout(function() {
+
+							linesplayControls(value)
+						}, 2000)
+					}
 
 				}
 
