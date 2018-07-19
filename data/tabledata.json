@@ -1,0 +1,68 @@
+[
+{
+	"name":'American',
+	'data15': 74558,
+	'data16': 81772,
+	'data17': 74194
+	
+},
+{
+	"name":'UK',
+	'data15': 3174,
+	'data16': 2419,
+	'data17': 2271
+	
+},
+{
+	"name":'Australia',
+	'data15': 27872,
+	'data16': 29224,
+	'data17': 28275
+	
+},
+{
+	"name":'NewZealand',
+	'data15': 2600,
+	'data16': 2700,
+	'data17': 2700
+	
+},
+{
+	"name":'Singapore',
+	'data15': 8759,
+	'data16': 10310,
+	'data17': 11935
+	
+},
+{
+	"name":'Spain',
+	'data15': 4000,
+	'data16': 3900,
+	'data17': 4200
+	
+},
+{
+	"name":'Germany',
+	'data15': 2600,
+	'data16': 2700,
+	'data17': 2700
+	
+},
+
+{
+	"name":'French',
+	'data15': 3000,
+	'data16': 3500,
+	'data17': 3800
+	
+},
+
+{
+	"name":'Japan',
+	'data15': 1963,
+	'data16': 1800,
+	'data17': 1500
+	
+}
+
+]
